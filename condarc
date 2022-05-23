@@ -1,0 +1,8 @@
+# https://docs.conda.io/projects/conda/en/latest/configuration.html#
+
+# # changeps1 (bool)
+# #   When using activate, change the command prompt ($PS1) to include the
+# #   activated environment.
+# #
+# changeps1: true
+changeps1: False
