@@ -1,10 +1,3 @@
-# Add new line after each command
-precmd_newline() {
-    precmd() {
-        echo
-    }
-}
-
 # Get conda info
 precmd_conda_info() {
     if [[ -n $CONDA_PREFIX ]];
@@ -37,13 +30,13 @@ prompt () {
     NEWLINE=$'\n'
 
     # start boldface mode and black foreground colour
-    left="%B%F{black}"
+    left="%B%F{white}"
     left_content=""
     # time
     left+="%K{green} [%*] "
     left_content+=" [%*] "
     # current working directory
-    left+="%K{yellow} %~ "
+    left+="%K{magenta} %~ "
     left_content+=" %~ "
     # length of left
     left_length=${#${(%)left_content}}
@@ -73,7 +66,6 @@ prompt () {
 }
 
 autoload -Uz add-zsh-hook
-add-zsh-hook precmd precmd_newline
 add-zsh-hook precmd precmd_conda_info
 add-zsh-hook precmd precmd_venv_info
 add-zsh-hook precmd prompt
