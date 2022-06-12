@@ -18,4 +18,16 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-conda activate py39
+
+if command -v conda &>/dev/null
+then
+    if [ -n "$(conda env list|grep py39)" ]
+    then
+        conda activate py39
+    fi
+else
+    if [ -f ~/opt/miniconda3/bin/conda ]
+    then
+        ~/opt/miniconda3/bin/conda init zsh
+    fi
+fi
