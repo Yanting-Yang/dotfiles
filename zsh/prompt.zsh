@@ -6,7 +6,7 @@ venv_env() {
     local output
     if [[ -n $VIRTUAL_ENV ]];
     then
-        output=" %B%F{cyan}($(basename $VIRTUAL_ENV))%f%b "
+        output=" %B%F{cyan}($(basename $VIRTUAL_ENV))%f%b"
     else
         output=""
     fi
@@ -20,14 +20,41 @@ current_time () {
 }
 
 current_time_ms() {
-    local time_ms="$(date +%s.%3N)"
+    local time_ms
+    if [[ "$OSTYPE" == "linux-gnu" ]]
+    then
+        # Linux
+        time_ms="$(date +%s.%3N)"
+    elif [[ "$OSTYPE" == "darwin"* ]]
+    then
+        # macOS
+        time_ms="$(gdate +%s.%3N)";
+    else
+        # Unknown.
+    fi
+    echo "$time_ms"
+}
+
+format_time() {
+    local time_ms
+    if [[ "$OSTYPE" == "linux-gnu" ]]
+    then
+        # Linux
+        time_ms="$(date -u -d @$1 +"%T.%3N")"
+    elif [[ "$OSTYPE" == "darwin"* ]]
+    then
+        # macOS
+        time_ms="$(gdate -u -d @$1 +"%T.%3N")";
+    else
+        # Unknown.
+    fi
     echo "$time_ms"
 }
 
 # directory
 directory() {
     # REF: https://stackoverflow.com/questions/25944006/bash-current-working-directory-with-replacing-path-to-home-folder
-    local output="%B%F{cyan}[${PWD/#$HOME/~}]%f%b"
+    local output=" %B%F{cyan}[${PWD/#$HOME/~}]%f%b"
     echo "$output"
 }
 
@@ -43,10 +70,17 @@ conda_env() {
         else
             local conda_env="$conda_basename"
         fi
-        output=" %B%F{cyan}($conda_env)%f%b "
+        output=" %B%F{cyan}($conda_env)%f%b"
     else
         output=""
     fi
+    echo "$output"
+}
+
+# username and hostname
+user_host() {
+    local output
+    output=" %B%F{green}%n@%m%f%b"
     echo "$output"
 }
 
@@ -60,7 +94,7 @@ precmd() {
     fi
     COMMAND_TIME_END="$(current_time_ms)"
     cost=$(($COMMAND_TIME_END-$COMMAND_TIME_BEGIN))
-    cost=$(date -u -d @$cost +"%T.%3N")
+    cost=$(format_time $cost)
     if [[ "$last_cmd_return_code" = "0" ]]
     then
         echo ${(%):-"%B%F{green}❱❱❱ [cost $cost] %f%b"}
@@ -78,5 +112,5 @@ preexec() {
 # https://stackoverflow.com/questions/59558252/make-zsh-prompt-update-each-time-a-command-is-executed
 setopt PROMPT_SUBST
 NEWLINE=$'\n'
-PROMPT='$(current_time) $(directory)$(conda_env)$(venv_env)$NEWLINE> '
+PROMPT='$(current_time)$(directory)$(conda_env)$(venv_env)$(user_host) $NEWLINE> '
 first_prompt=true
