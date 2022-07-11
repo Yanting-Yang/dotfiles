@@ -7,3 +7,6 @@
 [submodule "zsh/plugins/zsh-autocomplete"]
 	path = zsh/plugins/zsh-autocomplete
 	url = https://github.com/marlonrichert/zsh-autocomplete.git
+[submodule "vim/plugins/vim-plug"]
+	path = vim/plugins/vim-plug
+	url = https://github.com/junegunn/vim-plug
