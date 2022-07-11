@@ -24,3 +24,5 @@ else
         ~/miniconda3/bin/conda init zsh
     fi
 fi
+
+source ~/.zsh/tmux.zsh
