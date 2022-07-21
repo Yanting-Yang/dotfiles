@@ -12,3 +12,4 @@
     ~/.zshrc:
     ~/.vimrc:
     ~/.vim/autoload/plug.vim: vim/plugins/vim-plug/plug.vim
+    ~/.config/nvim: nvim
