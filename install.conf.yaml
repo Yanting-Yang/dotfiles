@@ -6,10 +6,8 @@
 - clean: ["~"]
 
 - link:
-    ~/.condarc:
     ~/.tmux.conf:
     ~/.zsh:
     ~/.zshrc:
     ~/.vimrc:
-    ~/.vim/autoload/plug.vim: vim/plugins/vim-plug/plug.vim
     ~/.config/nvim: nvim
